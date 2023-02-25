@@ -23,16 +23,23 @@ function App() {
   const [currGuess, setCurrGuess] = useState(0);
 
   //TODO: define state for a "number of close guesses" variable
+  const [closeCounter, setCloseCounter] = useState(0); 
 
 
   useEffect(() => { 
     //TODO: if the current guess is within 50 of the lucky number, increment "number of close guesses" variable
-  }, []);
+    if (Math.abs(currGuess - lucky) <= 50)
+    {
+      setCloseCounter(closeCounter + 1); 
+    }
+    // eslint-disable-next-line 
+  }, [currGuess]);
 
 
   const handleClick = () => {
       //TODO: add user's guess to firestore database
       //collection name: "guesses" > property: "num"
+      db.collection("guesses").add({num : currGuess})
   }
 
 
@@ -57,7 +64,7 @@ function App() {
 
 
         {/* TODO: Display number of close guesses here */}
-        <p>Close guesses: </p>
+        <p>Close guesses: {closeCounter} </p>
         <br></br>
         <Button variant="contained" onClick={handleClick}>Submit</Button>
       </header>
